@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tipos de Preguntas - Herramienta Educativa</title>
+    <style>
+        /* Diseño Mobile-First y Responsivo */
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            padding: 16px;
+            color: #1f2937;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #111827;
+            font-size: 1.5rem;
+            margin-bottom: 24px;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .card h2 {
+            margin: 0;
+            color: #2563eb;
+            font-size: 1.25rem;
+        }
+        .badge {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 4px 8px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+        .concepto {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+        .ejemplo-box {
+            background: #f9fafb;
+            border-left: 4px solid #3b82f6;
+            padding: 12px 16px;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.9rem;
+            color: #4b5563;
+            margin-bottom: 16px;
+        }
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+        }
+        button:hover { background: #1d4ed8; }
+        
+        /* Estilos del Modal Interactivo */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            box-sizing: border-box;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+        }
+        .close-btn {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            font-size: 24px;
+            background: none;
+            color: #6b7280;
+            width: auto;
+            padding: 0;
+        }
+        .close-btn:hover { background: none; color: #111827; }
+        
+        /* Controles de formulario (Áreas táctiles cómodas) */
+        .radio-label {
+            display: block;
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+        .radio-label:hover { background: #f9fafb; }
+        input[type="radio"] { transform: scale(1.2); margin-right: 8px; }
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-family: inherit;
+            margin-top: 8px;
+        }
+        .likert-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        @media (min-width: 640px) {
+            h1 { font-size: 2rem; }
+            button { width: auto; }
+            .likert-group { flex-direction: row; justify-content: space-between; }
+            .likert-group label { text-align: center; font-size: 0.8rem; border: none; padding: 4px; }
+            .likert-group input { display: block; margin: 8px auto 0 auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Clasificación de Preguntas</h1>
+
+        <!-- Opción Múltiple -->
+        <div class="card">
+            <div class="card-header">
+                <h2>1. Opción Múltiple</h2>
+                <span class="badge">Cerrada</span>
+            </div>
+            <div class="concepto">
+                <strong>Concepto:</strong> Ofrece al encuestado una lista de respuestas predeterminadas de las cuales debe elegir una (o varias). Facilita el análisis cuantitativo.
+            </div>
+            <div class="ejemplo-box">
+                <strong>Ejemplo:</strong> ¿Cuál es tu red social favorita para uso educativo? (a) Facebook, (b) TikTok, (c) YouTube, (d) Otra.
+            </div>
+            <button onclick="abrirModal('multiple')">Probar Ejemplo</button>
+        </div>
+
+        <!-- Dicotómica -->
+        <div class="card">
+            <div class="card-header">
+                <h2>2. Dicotómica</h2>
+                <span class="badge">Cerrada</span>
+            </div>
+            <div class="concepto">
+                <strong>Concepto:</strong> Solo permite dos posibles opciones de respuesta, generalmente opuestas o excluyentes (Sí/No, Verdadero/Falso).
+            </div>
+            <div class="ejemplo-box">
+                <strong>Ejemplo:</strong> ¿Cuentas con conexión a internet en tu hogar? (Sí / No)
+            </div>
+            <button onclick="abrirModal('dicotomica')">Probar Ejemplo</button>
+        </div>
+
+        <!-- Escala Likert -->
+        <div class="card">
+            <div class="card-header">
+                <h2>3. Escala Likert</h2>
+                <span class="badge">Medición</span>
+            </div>
+            <div class="concepto">
+                <strong>Concepto:</strong> Mide el nivel de acuerdo o desacuerdo de una persona frente a una afirmación. Generalmente consta de 5 o 7 puntos progresivos.
+            </div>
+            <div class="ejemplo-box">
+                <strong>Ejemplo:</strong> "El uso de la Inteligencia Artificial mejora el aprendizaje". Califique su nivel de acuerdo (Del 1 al 5).
+            </div>
+            <button onclick="abrirModal('likert')">Probar Ejemplo</button>
+        </div>
+
+        <!-- Abierta -->
+        <div class="card">
+            <div class="card-header">
+                <h2>4. Abierta</h2>
+                <span class="badge">Cualitativa</span>
+            </div>
+            <div class="concepto">
+                <strong>Concepto:</strong> Permite al encuestado responder libremente con sus propias palabras. Ideal para obtener opiniones profundas y detalles no previstos.
+            </div>
+            <div class="ejemplo-box">
+                <strong>Ejemplo:</strong> ¿Qué características te gustaría que tuviera el nuevo laboratorio de cómputo?
+            </div>
+            <button onclick="abrirModal('abierta')">Probar Ejemplo</button>
+        </div>
+    </div>
+
+    <!-- Modal Interactivo -->
+    <div id="miModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="cerrarModal()">&times;</button>
+            <h3 id="modal-titulo" style="margin-top: 0; color: #1f2937;"></h3>
+            <p id="modal-instruccion" style="font-size: 0.9rem; color: #4b5563; margin-bottom: 20px;"></p>
+            
+            <div id="modal-cuerpo"></div>
+
+            <button style="margin-top: 24px; width: 100%;" onclick="cerrarModal()">Enviar Respuesta Simulada</button>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById('miModal');
+        const titulo = document.getElementById('modal-titulo');
+        const instruccion = document.getElementById('modal-instruccion');
+        const cuerpo = document.getElementById('modal-cuerpo');
+
+        const contenidos = {
+            multiple: {
+                title: 'Opción Múltiple',
+                desc: '¿Cuál es tu red social favorita para uso educativo?',
+                html: `
+                    <label class="radio-label"><input type="radio" name="rs"> Facebook</label>
+                    <label class="radio-label"><input type="radio" name="rs"> TikTok</label>
+                    <label class="radio-label"><input type="radio" name="rs"> YouTube</label>
+                    <label class="radio-label"><input type="radio" name="rs"> Otra</label>
+                `
+            },
+            dicotomica: {
+                title: 'Dicotómica',
+                desc: '¿Cuentas con conexión a internet en tu hogar?',
+                html: `
+                    <label class="radio-label"><input type="radio" name="dico"> Sí</label>
+                    <label class="radio-label"><input type="radio" name="dico"> No</label>
+                `
+            },
+            likert: {
+                title: 'Escala Likert',
+                desc: '"El uso de la Inteligencia Artificial mejora el aprendizaje".',
+                html: `
+                    <div class="likert-group">
+                        <label>Totalmente en desacuerdo<input type="radio" name="lk"></label>
+                        <label>En desacuerdo<input type="radio" name="lk"></label>
+                        <label>Neutral<input type="radio" name="lk"></label>
+                        <label>De acuerdo<input type="radio" name="lk"></label>
+                        <label>Totalmente de acuerdo<input type="radio" name="lk"></label>
+                    </div>
+                `
+            },
+            abierta: {
+                title: 'Pregunta Abierta',
+                desc: '¿Qué características te gustaría que tuviera el nuevo laboratorio de cómputo?',
+                html: `
+                    <textarea rows="4" placeholder="Escribe tu opinión aquí..."></textarea>
+                `
+            }
+        };
+
+        function abrirModal(tipo) {
+            const data = contenidos[tipo];
+            titulo.textContent = data.title;
+            instruccion.textContent = data.desc;
+            cuerpo.innerHTML = data.html;
+            modal.style.display = 'flex';
+        }
+
+        function cerrarModal() {
+            modal.style.display = 'none';
+        }
+
+        // Cerrar modal al hacer clic afuera
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                cerrarModal();
+            }
+        }
+    </script>
+</body>
+</html>
